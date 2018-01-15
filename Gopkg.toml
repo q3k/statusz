@@ -26,5 +26,5 @@
   name = "github.com/golang/glog"
 
 [[constraint]]
+  branch = "master"
   name = "github.com/shirou/gopsutil"
-  version = "2.17.12"
