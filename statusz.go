@@ -60,6 +60,8 @@ var (
 	sections []section
 	tmpl     = template.Must(reparse(nil))
 	funcs    = make(template.FuncMap)
+
+	DefaultMux = true
 )
 
 type section struct {
@@ -128,7 +130,7 @@ func reparse(sections []section) (*template.Template, error) {
 	return template.New("").Funcs(funcs).Parse(buf.String())
 }
 
-func statusHandler(w http.ResponseWriter, r *http.Request) {
+func StatusHandler(w http.ResponseWriter, r *http.Request) {
 	lock.Lock()
 	defer lock.Unlock()
 
@@ -186,7 +188,9 @@ func init() {
 	}
 	binaryHash = fmt.Sprintf("%x", h.Sum(nil))
 
-	http.HandleFunc("/debug/status", statusHandler)
+	if DefaultMux {
+		http.HandleFunc("/debug/status", StatusHandler)
+	}
 }
 
 // AddStatusPart adds a new section to status. frag is used as a
